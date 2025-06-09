@@ -30,9 +30,21 @@
                         <div class="mb-3">
                             <label for="listaCursos" class="form-label">Cursos del alumno</label>
                             <select multiple class="form-control" name="cursos[]" id="listaCursos">
-                                <?php foreach ($cursosBD as $curso): ?>
-                                <option value="<?php echo $curso['id'] ?>"><?php echo $curso['nombre'] ?></option>
-                                <?php endforeach; ?>
+                                <option value="" disabled selected>Seleccione un curso</option>
+                                <!-- Aquí se generan las opciones de cursos -->
+
+                              
+                                    <?php foreach ($cursos as $curso): ?>
+                                        <option value="<?php echo $curso['id']; ?>"
+                                            <?php 
+                                                if (isset($alumnoSeleccionado['cursos']) && in_array($curso['id'], array_column($alumnoSeleccionado['cursos'], 'id'))) {
+                                                    echo 'selected';
+                                                }
+                                            ?>>
+                                            <?php echo $curso['nombre_curso']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                
                             </select>
                         </div>
 
@@ -61,7 +73,17 @@
                         <?php foreach ($alumnos as $alumno): ?>
                         <tr>
                             <td><?php echo $alumno['id']; ?></td>
-                            <td><?php echo $alumno['nombre'] . ' ' . $alumno['apellidos']; ?></td>
+                            <td>
+                                <?php echo $alumno['nombre'] . ' ' . $alumno['apellidos']; ?>
+                                <br>
+
+                                <?php foreach($alumno["cursos"]as $curso){ ?>
+                                  <a href="#"> <?php echo $curso['nombre_curso'];?></a> <br/>
+
+
+                                <?php };?>
+                                
+                            </td>
                            <td>
     <form method="post" style="display:inline;">
         <input type="hidden" name="id" value="<?php echo $alumno['id']; ?>">
@@ -78,4 +100,7 @@
     </div>
 </div>
 
-<?php include '../templates/pie.php'; ?>
+
+
+
+
