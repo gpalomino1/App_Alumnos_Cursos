@@ -104,6 +104,19 @@
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        new TomSelect('#listaCursos', {
+            plugins: ['remove_button'],
+            create: true,
+            createOnBlur: true,
+            maxItems: null, // Permite múltiples selecciones
+            placeholder: 'Seleccione cursos',
+            onChange: function(value) {
+                console.log('Cursos seleccionados:', value);
+            }
+        });
+    });
 <?php include '../templates/pie.php'; ?>
 
 
