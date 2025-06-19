@@ -1,63 +1,68 @@
-<?php 
+<?php
+// Mostrar errores para depuración (quitar en producción)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-require ('../librerias/fpdf.php');
+// Incluir la clase BD para la conexión (sin que imprima nada)
+include_once __DIR__ . '/../configuraciones/bd.php';
 
-include_once("../configuraciones/bd.php");
+// Crear conexión a la base de datos
 $conexionBD = BD::crearInstancia();
-//********************************************************************************/
-function agregarTexto($pdf, $texto, $x, $y, $fontSize = 10, $align = 'L', $r = 0, $g = 0, $b = 0){
-    $pdf->SetFont('Arial', $align, $fontSize);
-    $pdf->SetXY($x, $y);
-    $pdf->SetTextColor($r, $g, $b);
-$pdf->Cell(0, 10, $texto, 0, 0, $align);
-    // $pdf->SetXY($x, $y); // Uncomment if you want to set position before adding text
-    // $pdf->SetTextColor($r, $g, $b); // Uncomment to set text color
-    // $pdf->SetFont('Arial', '', $fontSize); // Uncomment to set font size
-    // $pdf->Cell(0, 10, $texto, 0, 1, $align); // Uncomment to actually add text
 
-    // $pdf->Text($x, $y, $texto); // Uncomment to actually add text
-}
+// Incluir FPDF
+require(__DIR__ . '/../librerias/fpdf.php');
 
-//************************************************************************************ */
-function agregarImagen($pdf, $rutaImagen, $x, $y, $ancho = 0, $alto = 0) {
-    if (file_exists($rutaImagen)) {
-        $pdf->Image($rutaImagen, $x, $y, $ancho, $alto);
-    } else {
-        echo "Error: La imagen no existe en la ruta especificada.";
+// Obtener parámetros GET
+$idcurso = $_GET['id_curso'] ?? '';
+$id_alumno = $_GET['id_alumno'] ?? '';
+
+try {
+    $sql = "SELECT alumnos.nombre, alumnos.apellidos, cursos.nombre_curso 
+            FROM alumnos, cursos 
+            WHERE alumnos.id = :id_alumno AND cursos.id = :id_curso";
+    $consulta = $conexionBD->prepare($sql);
+    $consulta->bindParam(':id_alumno', $id_alumno);
+    $consulta->bindParam(':id_curso', $idcurso);
+    $consulta->execute();
+    $alumno = $consulta->fetch(PDO::FETCH_ASSOC);
+
+    if (!$alumno) {
+        die("No se encontró el alumno o el curso.");
     }
+} catch (PDOException $e) {
+    die("Error en la consulta: " . $e->getMessage());
 }
 
-
-
-//************************************************************************************ */
-
-
-
-print_r($_GET);
-$idcurso = isset($_GET['id_curso']) ? $_GET['id_curso'] : '';
-$id_alumno = isset($_GET['id_alumno']) ? $_GET['id_alumno'] : '';
-$sql = "SELECT alumnos.nombre, alumnos.apellidos, cursos.nombre_curso as nombre_curso FROM alumnos, cursos 
-WHERE alumnos.id = :id_alumno AND cursos.id = :id_curso";
-$consulta = $conexionBD->prepare($sql);
-$consulta->bindParam(':id_alumno', $id_alumno);
-$consulta->bindParam(':id_curso', $idcurso);
-$consulta->execute();
-$alumno = $consulta->fetch(PDO::FETCH_ASSOC);   
-if (!$alumno) {
-    die("No se encontró el alumno o el curso.");
-}   
-$pdf=new FPDF("L","mm","A4");
+// Crear el PDF
+$pdf = new FPDF("L", "mm", "A4");
 $pdf->AddPage();
-$pdf->SetFont('Arial','B',16);
-$pdf->Cell(0, 10, 'Certificado de Finalizacion', 0, 1, 'C');
-$pdf->Ln(10); // Salto de línea
-$pdf->SetFont('Arial','',12);   
 
-/*
-print_r($alumno);
-$pdf->AddPage();
-$pdf->SetFont('Arial','B',16);
-$pdf->Cell(40,10,'¡Hola, Mundo!');
+$pdf->SetFont('Arial', 'B', 16);
+$pdf->Cell(0, 10, 'CERTIFICADO DE FINALIZACIÓN', 0, 1, 'C');
+$pdf->Ln(10);
+
+// Agregar contenido del certificado
+$nombreCompleto = $alumno['nombre'] . ' ' . $alumno['apellidos'];
+$nombreCurso = $alumno['nombre_curso'];
+
+$pdf->SetFont('Arial', '', 12);
+$pdf->Cell(0, 10, 'Se otorga el presente certificado a:', 0, 1, 'C');
+
+$pdf->SetFont('Arial', 'B', 14);
+$pdf->Cell(0, 10, $nombreCompleto, 0, 1, 'C');
+
+$pdf->SetFont('Arial', '', 12);
+$pdf->Cell(0, 10, 'Por haber completado satisfactoriamente el curso:', 0, 1, 'C');
+
+$pdf->SetFont('Arial', 'B', 14);
+$pdf->Cell(0, 10, $nombreCurso, 0, 1, 'C');
+
+// Agregar fecha
+$pdf->Ln(10);
+$pdf->SetFont('Arial', '', 12);
+$pdf->Cell(0, 10, 'Fecha de emisión: ' . date('d/m/Y'), 0, 1, 'C');
+
+// Salida del PDF
 $pdf->Output();
-*/
-?>
+exit;

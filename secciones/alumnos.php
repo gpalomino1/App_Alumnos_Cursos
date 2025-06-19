@@ -1,6 +1,7 @@
 <?php 
 
 //********************************************************************************//
+/*
 class BD {
 public static function crearInstancia() {
 $host = '127.0.0.1'; // Usamos IP para evitar error de socket
@@ -18,7 +19,7 @@ die("❌ Error de conexión: " . $e->getMessage());
 }
 }
 }
-
+*/
 include_once '../configuraciones/bd.php';
 $conexionBD=BD::crearInstancia();
 //********************************************************************************/
@@ -41,24 +42,19 @@ $nombre_curso = isset($_POST['nombre_curso']) ? $_POST['nombre_curso'] : '';
  $accion = isset($_POST['accion']) ? $_POST['accion'] : '';
 
  if ($accion != '') {   
-    // Si la acción no está vacía, procedemos a realizar la consulta
-    // Dependiendo de la acción, creamos, editamos o borramos un curso
-    // Preparar la consulta según la acción
-    // Usamos sentencias preparadas para evitar inyecciones SQL
-    // y mejorar la seguridad de la aplicación
-    // Las sentencias preparadas son una forma de ejecutar consultas SQL de manera segura   
+   
     switch ($accion) {
        case 'agregar':
     $consulta = $conexionBD->prepare("INSERT INTO alumnos (nombre, apellidos) VALUES (:nombre, :apellidos)");
     $consulta->bindParam(':nombre', $nombre);
     $consulta->bindParam(':apellidos', $apellidos);
     $consulta->execute();
-
-    $id = $conexionBD->lastInsertId(); // Obtener el ID del alumno recién creado
+// 🔍 Obtener el ID del alumno recién creado
+    $id = $conexionBD->lastInsertId(); 
 
     // 🔄 Asignar cursos seleccionados
     if (isset($_POST['cursos']) && is_array($_POST['cursos'])) {
-        $cursosSeleccionados = $_POST['cursos'];
+        $cursosSeleccionados = $_POST['cursos'];//////////////////////////////////////////
         foreach ($cursosSeleccionados as $cursoId) {
             $consultaCurso = $conexionBD->prepare("INSERT INTO alumnos_cursos (id_alumno, id_curso) VALUES (:id_alumno, :id_curso)");
             $consultaCurso->bindParam(':id_alumno', $id);
@@ -70,7 +66,7 @@ $nombre_curso = isset($_POST['nombre_curso']) ? $_POST['nombre_curso'] : '';
     // ✅ Redirección después de todo
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
-    break;
+    ;
 
 
         case 'editar':

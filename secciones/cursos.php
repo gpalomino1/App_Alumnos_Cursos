@@ -1,6 +1,7 @@
 <?php
 
 //********************************************************************************//
+/*
 class BD {
     public static function crearInstancia() {
         $host = '127.0.0.1'; // Usamos IP para evitar error de socket
@@ -19,7 +20,7 @@ class BD {
     }
 }
 
-
+*/
 include_once '../configuraciones/bd.php';
 $conexionBD=BD::crearInstancia();
 //********************************************************************************/

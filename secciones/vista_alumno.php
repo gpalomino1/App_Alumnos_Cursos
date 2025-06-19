@@ -12,13 +12,13 @@
                         <div class="mb-3">
                             <label for="id" class="form-label">ID</label>
                             <input type="text" class="form-control" name="id" id="id"
-                                value="<?php echo $id;?>" placeholder=" ID" />
+                                value="<?php echo $id; ?>" placeholder=" ID" />
                         </div>
 
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" name="nombre" id="nombre"
-                                value="<?php echo $nombre;?>" placeholder="Nombre del Alumno" />
+                                value="<?php echo $nombre; ?>" placeholder="Nombre del Alumno" />
                         </div>
 
                         <div class="mb-3">
@@ -28,23 +28,23 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="listaCursos" class="form-label">Cursos del alumno</label>
+                            <label for="listaCursos" class="form-label">Cursos disponibles</label>
                             <select multiple class="form-control" name="cursos[]" id="listaCursos">
                                 <option value="" disabled selected>Seleccione un curso</option>
                                 <!-- Aquí se generan las opciones de cursos -->
 
-                              
+
                                     <?php foreach ($cursos as $curso): ?>
                                         <option value="<?php echo $curso['id']; ?>"
-                                            <?php 
+                                            <?php
                                                 if (isset($alumnoSeleccionado['cursos']) && in_array($curso['id'], array_column($alumnoSeleccionado['cursos'], 'id'))) {
                                                     echo 'selected';
-                                                }
+                                            }
                                             ?>>
                                             <?php echo $curso['nombre_curso']; ?>
                                         </option>
                                     <?php endforeach; ?>
-                                
+
                             </select>
                         </div>
 
@@ -77,12 +77,14 @@
                                 <?php echo $alumno['nombre'] . ' ' . $alumno['apellidos']; ?>
                                 <br>
 
-                                <?php foreach($alumno["cursos"]as $curso){ ?>
-                                  <a href="#"> <?php echo $curso['nombre_curso'];?></a> <br/>
+                                <?php foreach ($alumno["cursos"] as $curso) {?>
+                                  <a href="../secciones/certificado.php?id_alumno=<?php echo $alumno['id']; ?>&id_curso=<?php echo $curso['id']; ?>" target="_blank">
+    <?php echo $curso['nombre_curso']; ?>
+</a><br/>
 
 
-                                <?php };?>
-                                
+                                <?php }?>
+
                             </td>
                            <td>
     <form method="post" style="display:inline;">
