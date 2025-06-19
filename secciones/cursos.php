@@ -27,7 +27,7 @@ $conexionBD=BD::crearInstancia();
 //Vamos a asignar id mediante el formulario**************************************//
 $id = isset($_POST['id']) ? $_POST['id'] :'';
 $nombre_curso = isset($_POST['nombre_curso']) ? $_POST['nombre_curso'] : '';
-print_r($_POST);
+//print_r($_POST);
  $accion = isset($_POST['accion']) ? $_POST['accion'] : '';
 
  if ($accion != '') {   

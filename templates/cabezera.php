@@ -1,3 +1,11 @@
+<?php 
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    header('Location: ../index.php'); // Redirigir al inicio de sesión si no hay sesión
+   
+}
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -16,6 +24,10 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+        />
     </head>
 
     <body><nav class="navbar navbar-expand navbar-light bg-light">
@@ -24,7 +36,7 @@
                             >Inicio <span class="visually-hidden">(current)</span></a>
                         <a class="nav-item nav-link" href="vista_alumno.php">Alumnos</a>
                         <a class="nav-item nav-link" href="vista_cursos.php">Cursos</a>
-                        <a class="nav-item nav-link" href="#">Cerrar sesión</a>
+                        <a class="nav-item nav-link" href="cerrar.php">Cerrar sesión</a>
                     </div>
                    </nav>
 <!-- ----------------------------------------------------------------------->

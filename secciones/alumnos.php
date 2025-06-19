@@ -37,7 +37,7 @@ $alumnos=$consulta->fetchAll(); // <--- esta es la variable que vas a usar
 $id = isset($_POST['id']) ? $_POST['id'] :'';
 $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
 $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : '';
-print_r($_POST);
+//print_r($_POST);
 $nombre_curso = isset($_POST['nombre_curso']) ? $_POST['nombre_curso'] : '';
  $accion = isset($_POST['accion']) ? $_POST['accion'] : '';
 

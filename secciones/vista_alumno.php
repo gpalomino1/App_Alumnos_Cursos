@@ -79,7 +79,7 @@
 
                                 <?php foreach ($alumno["cursos"] as $curso) {?>
                                   <a href="../secciones/certificado.php?id_alumno=<?php echo $alumno['id']; ?>&id_curso=<?php echo $curso['id']; ?>" target="_blank">
-    <?php echo $curso['nombre_curso']; ?>
+                        <i class="bi bi-filetype-pdf text-danger"></i>               <?php echo $curso['nombre_curso']; ?>
 </a><br/>
 
 

@@ -1,3 +1,23 @@
+
+<?php 
+session_start(); // Iniciar sesión para manejar la autenticación    
+if($_POST) {
+    $user = isset($_POST['user']) ? $_POST['user'] : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+
+    // Aquí deberías validar el usuario y la contraseña con tu base de datos
+    // Por simplicidad, vamos a usar un usuario y contraseña fijos
+    if ($user === 'admin' && $password === '1234') {
+        $_SESSION['user'] = $user; // Guardar el usuario en la sesión
+        header('Location: secciones/index.php'); // Redirigir al index
+        exit();
+    } else {
+        $error = "Usuario o contraseña incorrectos.";
+    }
+}
+
+
+?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -20,49 +40,48 @@
 
     <body>
         <div class="container">
-            <div class="row"></div>
-            <div class="col-md-4">
-              
-            </div>
-            <div class="col-md-4">
-                  <br><!--hace un lijero espacio el br -->
-                  <form action="secciones/index.php" method="post">
-             <div class="card">
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <br><!--hace un lijero espacio el br -->
+        <form action="" method="post">
+            <div class="card">
                 <div class="card-header">Inicio de sesión</div>
                 <div class="card-body">
-
-                   <div class="mb-3">
-                    <label for="" class="form-label">Usuario</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        name="user"
-                        id="user"
-                        aria-describedby="helpId"
-                        placeholder="usuario"
-                    />
-                    <small id="helpId" class="form-text text-muted">Escriba su usuario</small>
-                   </div>
-                   <div class="mb-3">
-                    <label for="" class="form-label">Contraseña</label>
-                    <input
-                        type="password"
-                        class="form-control"
-                        name="password"
-                        id="password"
-                        aria-describedby="helpId"
-                        placeholder="pasword"
-                    />
-                    <small id="helpId" class="form-text text-muted">Escriba su contraseña</small>
-                   </div>
-                   <button type="submit" class=" btn btn-primary">Iniciar sesión</button>
-                                      
+                    <?php if (isset($error)): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php echo $error; ?>
+                        </div>
+                    <?php endif; ?>
+                    <div class="mb-3">
+                        <label for="user" class="form-label">Usuario</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="user"
+                            id="user"
+                            aria-describedby="helpId"
+                            placeholder="usuario"
+                        />
+                        <small id="helpId" class="form-text text-muted">Escriba su usuario</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input
+                            type="password"
+                            class="form-control"
+                            name="password"
+                            id="password"
+                            aria-describedby="helpId"
+                            placeholder="password"
+                        />
+                        <small id="helpId" class="form-text text-muted">Escriba su contraseña</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
                 </div>
-</form>
-             
-              
             </div>
-               </div>                     
+        </form>
+    </div>
+</div>
 
 
 
